@@ -25,6 +25,7 @@ String convertPubspec(
   String className = 'Pubspec',
   bool format = true,
   bool outputMap = false,
+  Iterable<String> filter = const [],
 }) {
   final dynamic data = loadYaml(source);
   final output = <String>[];
@@ -44,6 +45,10 @@ String convertPubspec(
 
   if (data is Map) {
     for (var v in data.entries) {
+      if (filter.isNotEmpty && !filter.contains(v.key)) {
+        continue;
+      }
+
       switch (v.key) {
         case 'version':
           if (v.value is! String) {

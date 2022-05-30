@@ -15,6 +15,16 @@
 import 'package:pubspec_extract/src/generator.dart';
 import 'package:test/test.dart';
 
+const pubspec = '''
+name: lib_name
+version: 1.02.3-dev+3
+description: 'description'
+environment:
+  sdk: ">=2.12.0-0 <3.0.0"
+executables:
+  pubspec_extract:
+''';
+
 void main() {
   test('Empty file', () {
     final result = convertPubspec('');
@@ -60,6 +70,23 @@ void main() {
       expect(result.contains('versionBuild = 3;'), true);
       expect(result.contains('versionPreRelease = \'dev\';'), true);
       expect(result.contains('versionIsPreRelease = true;'), true);
+    });
+
+    test('filter optin', () {
+      final result1 = convertPubspec(pubspec, filter: ['name']);
+      expect(result1.contains('name = \'lib_name\';'), true);
+      expect(result1.contains('version = \'1.02.3\';'), false);
+
+      final result2 = convertPubspec(pubspec, filter: ['version']);
+      expect(result2.contains('name = \'lib_name\';'), false);
+      expect(result2.contains('version = \'1.02.3\';'), true);
+      expect(result2.contains('versionSmall = \'1.02\';'), true);
+      expect(result2.contains('versionMajor = 1;'), true);
+      expect(result2.contains('versionMinor = 2;'), true);
+      expect(result2.contains('versionPatch = 3;'), true);
+      expect(result2.contains('versionBuild = 3;'), true);
+      expect(result2.contains('versionPreRelease = \'dev\';'), true);
+      expect(result2.contains('versionIsPreRelease = true;'), true);
     });
   });
 }

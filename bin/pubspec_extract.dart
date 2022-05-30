@@ -70,6 +70,11 @@ int main(List<String> arguments) {
       abbr: 'h',
       negatable: false,
       help: 'Shows usage information',
+    )
+    ..addMultiOption(
+      'filter',
+      defaultsTo: [],
+      help: 'Add to generated file only fields specified in option',
     );
 
   final argResults = parser.parse(arguments);
@@ -95,6 +100,7 @@ int main(List<String> arguments) {
   final bool mapList = argResults['map-list'];
   final bool format = argResults['format'];
   final bool verbose = argResults['verbose'];
+  final Iterable<String> filter = argResults['filter'];
 
   // Initialize logger
   Logger.root.level = verbose ? Level.ALL : Level.SEVERE;
@@ -119,6 +125,7 @@ int main(List<String> arguments) {
     format: format,
     outputMap: mapList,
     className: className,
+    filter: filter,
   );
   File(destination).writeAsStringSync(contents);
 

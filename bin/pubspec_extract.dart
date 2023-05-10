@@ -60,6 +60,11 @@ int main(List<String> arguments) {
       negatable: false,
       help: 'Add a list of the exported variables',
     )
+    ..addMultiOption(
+      'filter',
+      defaultsTo: [],
+      help: 'Add to generated file only fields specified in option',
+    )
     ..addFlag(
       'version',
       negatable: false,
@@ -70,11 +75,6 @@ int main(List<String> arguments) {
       abbr: 'h',
       negatable: false,
       help: 'Shows usage information',
-    )
-    ..addMultiOption(
-      'filter',
-      defaultsTo: [],
-      help: 'Add to generated file only fields specified in option',
     );
 
   final argResults = parser.parse(arguments);
